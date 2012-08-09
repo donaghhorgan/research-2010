@@ -1,0 +1,702 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     28172,        693]
+NotebookOptionsPosition[     26797,        640]
+NotebookOutlinePosition[     27153,        656]
+CellTagsIndexPosition[     27110,        653]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+Comparison of single and double threshold networks with varying SNR\
+\>", "Title",
+ CellChangeTimes->{{3.54547462352068*^9, 3.545474650273258*^9}, {
+  3.545483531454236*^9, 3.545483576092832*^9}, {3.54625760633537*^9, 
+  3.546257606479314*^9}, {3.547212418101091*^9, 3.5472124279543943`*^9}, {
+  3.5475300023658257`*^9, 3.547530018599757*^9}, {3.548849550015401*^9, 
+  3.5488495650813513`*^9}, {3.553424601495986*^9, 3.553424622726677*^9}, {
+  3.55350158850005*^9, 3.553501607666108*^9}, {3.553501833193748*^9, 
+  3.5535018379703693`*^9}}],
+
+Cell["\<\
+This notebook compares the performance of single and double threshold \
+networks operating with optimum voting rules as the signal to noise ratio is \
+varied.\
+\>", "Text",
+ CellChangeTimes->{{3.54883679524676*^9, 3.548836870801154*^9}, {
+  3.5488377025406647`*^9, 3.5488377131480703`*^9}, {3.548837776284315*^9, 
+  3.548837797819186*^9}, {3.5488379630182953`*^9, 3.5488379631613092`*^9}, {
+  3.548849570925343*^9, 3.548849598458249*^9}, {3.55342462669707*^9, 
+  3.55342465163873*^9}, {3.553501612823159*^9, 3.553501647218281*^9}, {
+  3.553501833232806*^9, 3.553501840963704*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Copyright notice", "Subsection"],
+
+Cell["\<\
+Copyright (C) 2012 Donagh Horgan.
+Email: donaghh@rennes.ucc.ie.
+
+This program is free software : you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See 
+COPYING for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program. If not, see http://www.gnu.org/licenses.\
+\>", "Text",
+ CellChangeTimes->{{3.549805026071344*^9, 3.549805026198921*^9}}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Version information", "Subsection"],
+
+Cell["\<\
+09/08/2012
+1.0\
+\>", "Text",
+ CellChangeTimes->{{3.553424661049788*^9, 3.553424663270718*^9}, {
+  3.5535065260526743`*^9, 3.553506526660153*^9}}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Changelog", "Subsection"],
+
+Cell["\<\
+Version 1.0: This version was used in the submitted version of the paper.\
+\>", "Text",
+ CellChangeTimes->{{3.5498050483432837`*^9, 3.549805058422082*^9}}]
+}, Closed]],
+
+Cell[CellGroupData[{
+
+Cell["Set up", "Section",
+ CellChangeTimes->{{3.5453780335135527`*^9, 3.545378038251978*^9}}],
+
+Cell["Clear all symbol values and load function definitions:", "Text",
+ CellChangeTimes->{{3.5488368944558268`*^9, 3.5488369364482307`*^9}, {
+  3.5488369746735487`*^9, 3.548837019296554*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"ClearAll", "[", "\"\<Global`*\>\"", "]"}], ";"}]], "Input",
+ CellChangeTimes->{{3.545377496151711*^9, 3.5453775066078253`*^9}, 
+   3.5488496164108353`*^9}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"path", "=", 
+   RowBox[{"NotebookDirectory", "[", "]"}]}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"SetDirectory", "[", 
+   RowBox[{"ToFileName", "[", "path", "]"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ParallelEvaluate", "[", 
+   RowBox[{"AppendTo", "[", 
+    RowBox[{"$Path", ",", "path"}], "]"}], "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ParallelEvaluate", "[", 
+   RowBox[{"<<", "definitions.m"}], "]"}], ";"}], "\n", 
+ RowBox[{"<<", "definitions.m"}], "\n", 
+ RowBox[{"<<", "PlotLegends`"}]}], "Input",
+ CellChangeTimes->{{3.5516156349058247`*^9, 3.5516156349069*^9}, {
+   3.5534245844453173`*^9, 3.553424587469614*^9}, {3.553424709265264*^9, 
+   3.5534247139868*^9}, 3.553424762852903*^9, 3.5534248989621353`*^9, {
+   3.553431325874991*^9, 3.55343132756948*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Variables", "Section",
+ CellChangeTimes->{{3.545483814982966*^9, 3.545483818721912*^9}, {
+  3.5462546457615757`*^9, 3.5462546471525097`*^9}}],
+
+Cell["Here, we define the parameters to be used:", "Text",
+ CellChangeTimes->{{3.5488368944558268`*^9, 3.5488369364482307`*^9}, {
+  3.548849628473323*^9, 3.548849637496893*^9}, {3.553425481273189*^9, 
+  3.553425484743226*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"M", "=", "200"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"n", "=", "20"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"v", "=", 
+   RowBox[{"{", 
+    RowBox[{"20", ",", "15", ",", "9"}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Lambda]0", "=", "200"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"\[Delta]", "=", "20"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"snrdbRange", "=", 
+   RowBox[{"Range", "[", 
+    RowBox[{
+     RowBox[{"-", "20"}], ",", 
+     RowBox[{"-", "1"}]}], "]"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.5534249281038017`*^9, 3.553424988541355*^9}, {
+   3.5534251391372623`*^9, 3.553425140288384*^9}, 3.5534252250783367`*^9, {
+   3.5534998642831783`*^9, 3.553499873432499*^9}, {3.553499960747182*^9, 
+   3.553499992700857*^9}, {3.553500095897861*^9, 3.5535000998200893`*^9}, 
+   3.553500259229244*^9, {3.5535011499841146`*^9, 3.5535011500474358`*^9}, {
+   3.553501408879922*^9, 3.553501451343132*^9}, 3.553501832339925*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Calculations", "Section",
+ CellChangeTimes->{{3.546254637096753*^9, 3.5462546425232143`*^9}, {
+   3.547740679017233*^9, 3.5477406799922523`*^9}, 3.551682963930751*^9}],
+
+Cell["\<\
+Calculate the performance of single and double threshold networks:\
+\>", "Text",
+ CellChangeTimes->{{3.5488368944558268`*^9, 3.5488369364482307`*^9}, {
+   3.54883703078456*^9, 3.548837077105679*^9}, {3.5488496578056707`*^9, 
+   3.548849676680759*^9}, 3.551682963930848*^9, {3.5534997247068243`*^9, 
+   3.553499743345319*^9}, {3.5535000146434183`*^9, 3.553500017697569*^9}, {
+   3.553500902165827*^9, 3.553500915009704*^9}, {3.553501832384857*^9, 
+   3.553501843411656*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"singleThresholdData", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"\[Gamma]", "=", 
+       SuperscriptBox["10", 
+        FractionBox["snrdb", "10"]]}], ";", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"snrdb", ",", 
+         RowBox[{
+          RowBox[{"FusionCenterProbabilityOfFalseAlarm", "[", 
+           RowBox[{
+            RowBox[{"ProbabilityOfFalseAlarm", "[", 
+             RowBox[{"M", ",", "\[Lambda]0"}], "]"}], ",", "n", ",", 
+            RowBox[{"k", "[", 
+             RowBox[{
+              RowBox[{"ProbabilityOfFalseAlarm", "[", 
+               RowBox[{"M", ",", "\[Lambda]0"}], "]"}], ",", 
+              RowBox[{"ProbabilityOfDetection", "[", 
+               RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}], ",", 
+              "n"}], "]"}]}], "]"}], "+", "1", "-", 
+          RowBox[{"FusionCenterProbabilityOfDetection", "[", 
+           RowBox[{
+            RowBox[{"ProbabilityOfDetection", "[", 
+             RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}], ",", 
+            "n", ",", 
+            RowBox[{"k", "[", 
+             RowBox[{
+              RowBox[{"ProbabilityOfFalseAlarm", "[", 
+               RowBox[{"M", ",", "\[Lambda]0"}], "]"}], ",", 
+              RowBox[{"ProbabilityOfDetection", "[", 
+               RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}], ",", 
+              "n"}], "]"}]}], "]"}]}]}], "}"}], "//", "N"}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"snrdb", ",", "snrdbRange"}], "}"}]}], "]"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.5535059294180737`*^9, 3.553505948052608*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"doubleThresholdData", "=", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"\[Gamma]", "=", 
+       RowBox[{
+        SuperscriptBox["10", 
+         FractionBox["snrdb", "10"]], "//", "N"}]}], ";", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"snrdb", ",", 
+         RowBox[{
+          RowBox[{"FusionCenterProbabilityOfFalseAlarm", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"ProbabilityOfAcquisition", "[", 
+               RowBox[{"M", ",", "\[Lambda]0"}], "]"}], ",", 
+              RowBox[{"1", "-", 
+               RowBox[{"ProbabilityOfFalseAlarm", "[", 
+                RowBox[{"M", ",", 
+                 RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}], "-", 
+               RowBox[{"ProbabilityOfAcquisition", "[", 
+                RowBox[{"M", ",", "\[Lambda]0"}], "]"}]}], ",", 
+              RowBox[{"ProbabilityOfFalseAlarm", "[", 
+               RowBox[{"M", ",", 
+                RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}]}], "}"}], 
+            ",", "v0", ",", 
+            RowBox[{"k", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"ProbabilityOfAcquisition", "[", 
+                 RowBox[{"M", ",", "\[Lambda]0"}], "]"}], ",", 
+                RowBox[{"1", "-", 
+                 RowBox[{"ProbabilityOfFalseAlarm", "[", 
+                  RowBox[{"M", ",", 
+                   RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}], "-", 
+                 RowBox[{"ProbabilityOfAcquisition", "[", 
+                  RowBox[{"M", ",", "\[Lambda]0"}], "]"}]}], ",", 
+                RowBox[{"ProbabilityOfFalseAlarm", "[", 
+                 RowBox[{"M", ",", 
+                  RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}]}], "}"}], 
+              ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"ProbabilityOfMissedDetection", "[", 
+                 RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}], 
+                ",", 
+                RowBox[{"1", "-", 
+                 RowBox[{"ProbabilityOfDetection", "[", 
+                  RowBox[{"M", ",", "\[Gamma]", ",", 
+                   RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}], "-", 
+                 RowBox[{"ProbabilityOfMissedDetection", "[", 
+                  RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}]}], 
+                ",", 
+                RowBox[{"ProbabilityOfDetection", "[", 
+                 RowBox[{"M", ",", "\[Gamma]", ",", 
+                  RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}]}], "}"}], 
+              ",", 
+              RowBox[{"{", 
+               RowBox[{"v0", ",", "n"}], "}"}]}], "]"}]}], "]"}], "+", "1", 
+          "-", 
+          RowBox[{"FusionCenterProbabilityOfDetection", "[", 
+           RowBox[{
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"ProbabilityOfMissedDetection", "[", 
+               RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}], ",", 
+              
+              RowBox[{"1", "-", 
+               RowBox[{"ProbabilityOfDetection", "[", 
+                RowBox[{"M", ",", "\[Gamma]", ",", 
+                 RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}], "-", 
+               RowBox[{"ProbabilityOfMissedDetection", "[", 
+                RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}]}], 
+              ",", 
+              RowBox[{"ProbabilityOfDetection", "[", 
+               RowBox[{"M", ",", "\[Gamma]", ",", 
+                RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}]}], "}"}], 
+            ",", "v0", ",", 
+            RowBox[{"k", "[", 
+             RowBox[{
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"ProbabilityOfAcquisition", "[", 
+                 RowBox[{"M", ",", "\[Lambda]0"}], "]"}], ",", 
+                RowBox[{"1", "-", 
+                 RowBox[{"ProbabilityOfFalseAlarm", "[", 
+                  RowBox[{"M", ",", 
+                   RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}], "-", 
+                 RowBox[{"ProbabilityOfAcquisition", "[", 
+                  RowBox[{"M", ",", "\[Lambda]0"}], "]"}]}], ",", 
+                RowBox[{"ProbabilityOfFalseAlarm", "[", 
+                 RowBox[{"M", ",", 
+                  RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}]}], "}"}], 
+              ",", 
+              RowBox[{"{", 
+               RowBox[{
+                RowBox[{"ProbabilityOfMissedDetection", "[", 
+                 RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}], 
+                ",", 
+                RowBox[{"1", "-", 
+                 RowBox[{"ProbabilityOfDetection", "[", 
+                  RowBox[{"M", ",", "\[Gamma]", ",", 
+                   RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}], "-", 
+                 RowBox[{"ProbabilityOfMissedDetection", "[", 
+                  RowBox[{"M", ",", "\[Gamma]", ",", "\[Lambda]0"}], "]"}]}], 
+                ",", 
+                RowBox[{"ProbabilityOfDetection", "[", 
+                 RowBox[{"M", ",", "\[Gamma]", ",", 
+                  RowBox[{"\[Lambda]0", "+", "\[Delta]"}]}], "]"}]}], "}"}], 
+              ",", 
+              RowBox[{"{", 
+               RowBox[{"v0", ",", "n"}], "}"}]}], "]"}]}], "]"}]}]}], "}"}], "//",
+        "N"}]}], ",", 
+     RowBox[{"{", 
+      RowBox[{"v0", ",", "v"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"snrdb", ",", "snrdbRange"}], "}"}]}], "]"}]}], ";"}]], "Input",\
+
+ CellChangeTimes->{{3.553493907582452*^9, 3.553493923576213*^9}, 
+   3.553497572441248*^9, {3.553497711115745*^9, 3.55349771133323*^9}, {
+   3.553497753101145*^9, 3.553497809610037*^9}, {3.5534978567878113`*^9, 
+   3.553497879946094*^9}, {3.55349804045243*^9, 3.553498075879682*^9}, {
+   3.5534981493840237`*^9, 3.553498152863682*^9}, {3.553498187844201*^9, 
+   3.5534981893537292`*^9}, {3.5534983040436087`*^9, 3.553498322745469*^9}, {
+   3.5534983827936974`*^9, 3.553498421581258*^9}, {3.5534995871840343`*^9, 
+   3.553499587322441*^9}, {3.5534996325088177`*^9, 3.553499632909492*^9}, {
+   3.553499846694961*^9, 3.5534998618243*^9}, {3.55349989259157*^9, 
+   3.553500021452745*^9}, {3.55350008138599*^9, 3.553500081721409*^9}, {
+   3.5535001349253807`*^9, 3.553500164085936*^9}, 3.5535002055137787`*^9, {
+   3.5535002592853622`*^9, 3.553500260888782*^9}, {3.55350073390879*^9, 
+   3.5535007350243597`*^9}, {3.553500917748681*^9, 3.553500921035236*^9}, {
+   3.553501444303403*^9, 3.55350144495991*^9}, {3.553501832634389*^9, 
+   3.5535018330842943`*^9}, 3.55350191068948*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Results", "Section",
+ CellChangeTimes->{{3.546254628322502*^9, 3.5462546346745872`*^9}, {
+  3.546255347308749*^9, 3.546255348317031*^9}, {3.546798257877228*^9, 
+  3.546798258982092*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Table", "[", 
+  RowBox[{
+   RowBox[{"ListPlot", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"doubleThresholdData", "[", 
+        RowBox[{"[", "i", "]"}], "]"}], ",", "singleThresholdData"}], "}"}], 
+     ",", 
+     RowBox[{"AxesLabel", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+       "\"\<SNR/dB\>\"", ",", 
+        "\"\<G(\!\(\*SubscriptBox[\(k\), \(opt\)]\))\>\""}], "}"}]}], ",", 
+     RowBox[{"PlotRange", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"Full", ",", 
+        RowBox[{"{", 
+         RowBox[{"0", ",", "1"}], "}"}]}], "}"}]}], ",", 
+     RowBox[{"PlotStyle", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"{", 
+         RowBox[{"Black", ",", "Dashed"}], "}"}], ",", "Black"}], "}"}]}], 
+     ",", 
+     RowBox[{"Joined", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"True", ",", "True"}], "}"}]}], ",", 
+     RowBox[{"PlotLegend", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\"\<Double threshold\>\"", ",", "\"\<Single threshold\>\""}], 
+       "}"}]}], ",", 
+     RowBox[{"LegendSize", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"0.8", ",", "0.5"}], "}"}]}], ",", 
+     RowBox[{"LegendPosition", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.2"}], ",", 
+        RowBox[{"-", "0.05"}]}], "}"}]}], ",", 
+     RowBox[{"LegendShadow", "\[Rule]", "None"}], ",", 
+     RowBox[{"GridLines", "\[Rule]", "Automatic"}], ",", 
+     RowBox[{"ImageSize", "\[Rule]", "400"}]}], "]"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"i", ",", 
+     RowBox[{"Length", "[", "v", "]"}]}], "}"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.5534983873900223`*^9, 3.553498398899469*^9}, {
+   3.553498452390457*^9, 3.553498455094384*^9}, {3.553499089565053*^9, 
+   3.553499092183134*^9}, {3.553499171448617*^9, 3.5534991720768337`*^9}, {
+   3.5534992209706497`*^9, 3.553499258043915*^9}, {3.553499374330989*^9, 
+   3.553499468570932*^9}, {3.5534996649356537`*^9, 3.553499699331324*^9}, 
+   3.553500054919593*^9, 3.5535002612786503`*^9, {3.5535007731607018`*^9, 
+   3.553500869240787*^9}, {3.5535011655450087`*^9, 3.553501174503469*^9}, {
+   3.553501246712949*^9, 3.553501302940866*^9}, {3.553501833097825*^9, 
+   3.5535018495801983`*^9}, {3.553501912556664*^9, 3.553501920588726*^9}, 
+   3.553505583424399*^9, 3.553505706494771*^9}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   GraphicsBox[{InsetBox[
+      GraphicsBox[{{}, {}, 
+        {GrayLevel[0], Dashing[{Small, Small}], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQAWIQDQEmB+rWzC1xNnxlD+EbH3g76ZBcxpIXUL7RAb6K
+KIaPu55B+YYH3qq/fBNf/ATKNziwmbN0Q+yTh1C+3oHLm2ZaHpp0B8rXOXD1
+xsWoRLurUL7WgY8uHeF3+k5D+RoHTu3+EMwuuR/KVzswO7wu9YnhCihf5cCU
+W2fymmZ3Q/lKB9bU+1kYH4yF8hUOvPkw+/aNi6pQvsyBizMXlKd/emkH4Usc
+aPos1yOpPBPKFznQvFI0/kdrMJQvcGBG+pbDxyfzQfkcB54yu6SHnT9mCw2g
+A6fYO84tKdwH5X/YX3De96fqtXhbABGXaEc=
+          "]]}, 
+        {GrayLevel[0], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQAWIQDQEmB7aEuIR6Z7+2h/CNDxi+3mVuZv8Kyjc6YLGt
+5sKfcy+gfMMD88J+TTUSfQ7lGxwwu8+asUjsKZSvd6DiMZeMo+8jKF/nAN/v
+FQmKefegfK0DH3j9K7pzb0D5GgfypArkTl29AOWrHSjKWbOtUvQYlK9y4Kx0
+12QT821QvtKBe79TudM6FkL5CgfWbkh6cZ+jFcqXObCk3WD9mitJUL7EAf3n
+YqdNtG2gfJEDpxQnPdPaqwjlCxzIufRB6q/1VzsIn+MAA0Nf79HZt6B8BiC/
+oY6FZwOU/2E/A8MCVgaGDXYAVkBciA==
+          "]]}},
+       AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+       Axes->True,
+       AxesLabel->{
+         FormBox["\"SNR/dB\"", TraditionalForm], 
+         FormBox[
+         "\"G(\\!\\(\\*SubscriptBox[\\(k\\), \\(opt\\)]\\))\"", 
+          TraditionalForm]},
+       AxesOrigin->{-20., 0},
+       DisplayFunction:>$DisplayFunction,
+       FormatType->TraditionalForm,
+       GridLines->Automatic,
+       ImageSize->400,
+       PlotRange->{{-20., -1.}, {0, 1}},
+       PlotRangeClipping->True,
+       PlotRangePadding->{
+         Scaled[0.02], Automatic}], {-1, -0.6180339887498948}, {
+      Left, Bottom}, {2, 1.2360679774997896`}], GraphicsGroupBox[{
+       {GrayLevel[0], 
+        RectangleBox[{-0.2, -0.05}, {0.6000000000000001, 0.45}]}, 
+       {GrayLevel[1], EdgeForm[{GrayLevel[0], Thickness[0.001]}], 
+        GraphicsGroupBox[{
+          RectangleBox[{-0.2, -0.05}, {0.6000000000000001, 0.45}], InsetBox[
+           GraphicsBox[{{{InsetBox[
+                GraphicsBox[{
+                  {GrayLevel[0], LineBox[{{0, 0.5}, {1, 0.5}}]}, {}},
+                 PlotRange->{{0, 1}, {0, 1}}], {0.08, 0.08}, {
+                Left, Bottom}, {1, 1}], 
+               InsetBox["\<\"Single threshold\"\>", \
+{1.2100000000000002`, 0.58}, {-1, 0}, Automatic, {1, 0}]}, {InsetBox[
+                GraphicsBox[{
+                  {GrayLevel[0], Dashing[{Small, Small}], 
+                   LineBox[{{0, 0.5}, {1, 0.5}}]}, {}},
+                 PlotRange->{{0, 1}, {0, 1}}], {0.08, 1.24}, {
+                Left, Bottom}, {1, 1}], 
+               InsetBox["\<\"Double threshold\"\>", \
+{1.2100000000000002`, 1.74}, {-1, 0}, Automatic, {1, 0}]}}, {}},
+            AspectRatio->0.625,
+            FormatType->TraditionalForm,
+            PlotRange->{{-0.1, 3.26}, {-0.1, 2.42}}], {-0.2, -0.05}, {
+           Left, Bottom}, {0.8, 0.5}]}]}}]},
+    AspectRatio->Automatic,
+    Background->None,
+    ColorOutput->Automatic,
+    ImageSize->400.,
+    PlotRange->All], ",", 
+   GraphicsBox[{InsetBox[
+      GraphicsBox[{{}, {}, 
+        {GrayLevel[0], Dashing[{Small, Small}], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQAWIQDQEmB+TTHQ4d4X9tD+EbH/g9x2b/klMvoXyjA7en
+XbudyvsCyjc80MpWqSjw4CmUb3Dg7U2jufvsH0P5egccFtTsbfF6AOXrHPin
+xDl9q9MtKF/rwCN2rpg5Vy9C+RoH3u/K9NZxOQ7lqx2oEUlaf3fdFihf5YDm
+Sqvpm2zmQPlKB678zWDSjquC8hUOvJ36fHGEawCUL3OA88XX14p5slC+xAHB
+ox/vZS9+agfhixzgOq261EtuNZQvcEArzX++n0gLlM9xwMew+hPjsmgon+FA
+ydm77hmz1aD8D/vPm5bPPx3EZAcA3p5g4g==
+          "]]}, 
+        {GrayLevel[0], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQAWIQDQEmB7aEuIR6Z7+2h/CNDxi+3mVuZv8Kyjc6YLGt
+5sKfcy+gfMMD88J+TTUSfQ7lGxwwu8+asUjsKZSvd6DiMZeMo+8jKF/nAN/v
+FQmKefegfK0DH3j9K7pzb0D5GgfypArkTl29AOWrHSjKWbOtUvQYlK9y4Kx0
+12QT821QvtKBe79TudM6FkL5CgfWbkh6cZ+jFcqXObCk3WD9mitJUL7EAf3n
+YqdNtG2gfJEDpxQnPdPaqwjlCxzIufRB6q/1VzsIn+MAA0Nf79HZt6B8BiC/
+oY6FZwOU/2E/A8MCVgaGDXYAVkBciA==
+          "]]}},
+       AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+       Axes->True,
+       AxesLabel->{
+         FormBox["\"SNR/dB\"", TraditionalForm], 
+         FormBox[
+         "\"G(\\!\\(\\*SubscriptBox[\\(k\\), \\(opt\\)]\\))\"", 
+          TraditionalForm]},
+       AxesOrigin->{-20., 0},
+       DisplayFunction:>$DisplayFunction,
+       FormatType->TraditionalForm,
+       GridLines->Automatic,
+       ImageSize->400,
+       PlotRange->{{-20., -1.}, {0, 1}},
+       PlotRangeClipping->True,
+       PlotRangePadding->{
+         Scaled[0.02], Automatic}], {-1, -0.6180339887498948}, {
+      Left, Bottom}, {2, 1.2360679774997896`}], GraphicsGroupBox[{
+       {GrayLevel[0], 
+        RectangleBox[{-0.2, -0.05}, {0.6000000000000001, 0.45}]}, 
+       {GrayLevel[1], EdgeForm[{GrayLevel[0], Thickness[0.001]}], 
+        GraphicsGroupBox[{
+          RectangleBox[{-0.2, -0.05}, {0.6000000000000001, 0.45}], InsetBox[
+           GraphicsBox[{{{InsetBox[
+                GraphicsBox[{
+                  {GrayLevel[0], LineBox[{{0, 0.5}, {1, 0.5}}]}, {}},
+                 PlotRange->{{0, 1}, {0, 1}}], {0.08, 0.08}, {
+                Left, Bottom}, {1, 1}], 
+               InsetBox["\<\"Single threshold\"\>", \
+{1.2100000000000002`, 0.58}, {-1, 0}, Automatic, {1, 0}]}, {InsetBox[
+                GraphicsBox[{
+                  {GrayLevel[0], Dashing[{Small, Small}], 
+                   LineBox[{{0, 0.5}, {1, 0.5}}]}, {}},
+                 PlotRange->{{0, 1}, {0, 1}}], {0.08, 1.24}, {
+                Left, Bottom}, {1, 1}], 
+               InsetBox["\<\"Double threshold\"\>", \
+{1.2100000000000002`, 1.74}, {-1, 0}, Automatic, {1, 0}]}}, {}},
+            AspectRatio->0.625,
+            FormatType->TraditionalForm,
+            PlotRange->{{-0.1, 3.26}, {-0.1, 2.42}}], {-0.2, -0.05}, {
+           Left, Bottom}, {0.8, 0.5}]}]}}]},
+    AspectRatio->Automatic,
+    Background->None,
+    ColorOutput->Automatic,
+    ImageSize->400.,
+    PlotRange->All], ",", 
+   GraphicsBox[{InsetBox[
+      GraphicsBox[{{}, {}, 
+        {GrayLevel[0], Dashing[{Small, Small}], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQAWIQDQEmBx4tOHrwNOMbewjf+MCG0zs8tT+8gvKNDuSY
+cIuxz3gJ5RseOJNmba/29jmUb3Dgi8IxM/2XT6F8vQPMx2/JXZv6GMrXOZCj
+evLpvDcPoHytA2I2DEasW29C+RoHrtree+j35iKUr3bgvcran1pXTkD5Kgd6
+D3iIb5y2FcpXOnC44srJ4xOXQPkKB7xW5Cf7m7VB+TIHDjZqefoap0D5Egea
+Hzo9j14eCOWLHJgrP2fd149SUL7Agbn2M69Us4lC+RwHvJ4X3Xw9/6odNIAO
+TD7X2Z788hiU/2H/5HN7g9Y/O2YHADpjZ2Y=
+          "]]}, 
+        {GrayLevel[0], LineBox[CompressedData["
+1:eJxTTMoPSmViYGAQAWIQDQEmB7aEuIR6Z7+2h/CNDxi+3mVuZv8Kyjc6YLGt
+5sKfcy+gfMMD88J+TTUSfQ7lGxwwu8+asUjsKZSvd6DiMZeMo+8jKF/nAN/v
+FQmKefegfK0DH3j9K7pzb0D5GgfypArkTl29AOWrHSjKWbOtUvQYlK9y4Kx0
+12QT821QvtKBe79TudM6FkL5CgfWbkh6cZ+jFcqXObCk3WD9mitJUL7EAf3n
+YqdNtG2gfJEDpxQnPdPaqwjlCxzIufRB6q/1VzsIn+MAA0Nf79HZt6B8BiC/
+oY6FZwOU/2E/A8MCVgaGDXYAVkBciA==
+          "]]}},
+       AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
+       Axes->True,
+       AxesLabel->{
+         FormBox["\"SNR/dB\"", TraditionalForm], 
+         FormBox[
+         "\"G(\\!\\(\\*SubscriptBox[\\(k\\), \\(opt\\)]\\))\"", 
+          TraditionalForm]},
+       AxesOrigin->{-20., 0},
+       DisplayFunction:>$DisplayFunction,
+       FormatType->TraditionalForm,
+       GridLines->Automatic,
+       ImageSize->400,
+       PlotRange->{{-20., -1.}, {0, 1}},
+       PlotRangeClipping->True,
+       PlotRangePadding->{
+         Scaled[0.02], Automatic}], {-1, -0.6180339887498948}, {
+      Left, Bottom}, {2, 1.2360679774997896`}], GraphicsGroupBox[{
+       {GrayLevel[0], 
+        RectangleBox[{-0.2, -0.05}, {0.6000000000000001, 0.45}]}, 
+       {GrayLevel[1], EdgeForm[{GrayLevel[0], Thickness[0.001]}], 
+        GraphicsGroupBox[{
+          RectangleBox[{-0.2, -0.05}, {0.6000000000000001, 0.45}], InsetBox[
+           GraphicsBox[{{{InsetBox[
+                GraphicsBox[{
+                  {GrayLevel[0], LineBox[{{0, 0.5}, {1, 0.5}}]}, {}},
+                 PlotRange->{{0, 1}, {0, 1}}], {0.08, 0.08}, {
+                Left, Bottom}, {1, 1}], 
+               InsetBox["\<\"Single threshold\"\>", \
+{1.2100000000000002`, 0.58}, {-1, 0}, Automatic, {1, 0}]}, {InsetBox[
+                GraphicsBox[{
+                  {GrayLevel[0], Dashing[{Small, Small}], 
+                   LineBox[{{0, 0.5}, {1, 0.5}}]}, {}},
+                 PlotRange->{{0, 1}, {0, 1}}], {0.08, 1.24}, {
+                Left, Bottom}, {1, 1}], 
+               InsetBox["\<\"Double threshold\"\>", \
+{1.2100000000000002`, 1.74}, {-1, 0}, Automatic, {1, 0}]}}, {}},
+            AspectRatio->0.625,
+            FormatType->TraditionalForm,
+            PlotRange->{{-0.1, 3.26}, {-0.1, 2.42}}], {-0.2, -0.05}, {
+           Left, Bottom}, {0.8, 0.5}]}]}}]},
+    AspectRatio->Automatic,
+    Background->None,
+    ColorOutput->Automatic,
+    ImageSize->400.,
+    PlotRange->All]}], "}"}]], "Output",
+ CellChangeTimes->{
+  3.553498455900016*^9, 3.553499058385016*^9, {3.553499090817668*^9, 
+   3.553499095773016*^9}, {3.55349914231371*^9, 3.5534991681477537`*^9}, {
+   3.5534992398564987`*^9, 3.5534992615832148`*^9}, 3.553499378244204*^9, {
+   3.5534994156389837`*^9, 3.553499471840063*^9}, 3.553499595541224*^9, 
+   3.553499648593164*^9, {3.553499682644315*^9, 3.553499702689773*^9}, 
+   3.553500060361733*^9, 3.553500763351575*^9, 3.553500801798201*^9, {
+   3.553500863990115*^9, 3.5535008796663017`*^9}, 3.553501184633761*^9, {
+   3.553501256408184*^9, 3.553501271024497*^9}, 3.553501313062478*^9, 
+   3.553501465119349*^9, 3.5535018636046047`*^9, 3.553501934016665*^9, 
+   3.55350292776726*^9, {3.5535034093635693`*^9, 3.5535034366123123`*^9}, 
+   3.5535055942333603`*^9, 3.553505873528124*^9, 3.553505964655512*^9, 
+   3.553506406763468*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1680, 991},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+ShowSelection->True,
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 549, 9, 88, "Title"],
+Cell[1131, 33, 590, 10, 30, "Text"],
+Cell[CellGroupData[{
+Cell[1746, 47, 38, 0, 39, "Subsection"],
+Cell[1787, 49, 740, 17, 296, "Text"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[2564, 71, 41, 0, 31, "Subsection"],
+Cell[2608, 73, 155, 5, 49, "Text"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[2800, 83, 31, 0, 31, "Subsection"],
+Cell[2834, 85, 165, 3, 30, "Text"]
+}, Closed]],
+Cell[CellGroupData[{
+Cell[3036, 93, 93, 1, 44, "Section"],
+Cell[3132, 96, 191, 2, 30, "Text"],
+Cell[3326, 100, 190, 4, 30, "Input"],
+Cell[3519, 106, 804, 19, 126, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4360, 130, 147, 2, 74, "Section"],
+Cell[4510, 134, 226, 3, 30, "Text"],
+Cell[4739, 139, 1047, 25, 126, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5823, 169, 173, 2, 74, "Section"],
+Cell[5999, 173, 483, 8, 30, "Text"],
+Cell[6485, 183, 1642, 39, 109, "Input"],
+Cell[8130, 224, 6566, 137, 204, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[14733, 366, 192, 3, 74, "Section"],
+Cell[CellGroupData[{
+Cell[14950, 373, 2324, 56, 69, "Input"],
+Cell[17277, 431, 9480, 204, 267, "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
