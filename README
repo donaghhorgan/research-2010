@@ -1,0 +1,30 @@
+Voting rule optimisation for double threshold energy detector-based cognitive 
+radio networks
+
+This repository provides source code used for the generation of results in 
+the IEEE-published paper "Voting rule optimisation for double threshold energy 
+detector-based cognitive radio networks".
+
+=== Contact ===
+
+Donagh Horgan
+E-mail: donaghh@rennes.ucc.ie
+
+
+=== Copyright ===
+
+Copyright (C) 2010-2012 Donagh Horgan. Licensed under GPLv3, see COPYING for 
+more info.
+
+
+=== Usage ===
+
+The repository is organised as follows:
+
+  * The .nb files are Mathematica notebooks and provide the means to generate 
+    and/or alter the results shown in the published version of the paper.
+  * The .m files are Mathematica packages, providing function definitions 
+    used in the notebooks - you do not need to edit these directly (in fact, 
+    you don't have to look at them at all if you don't want to - Mathematica 
+    will load them at runtime).
+  * Licensing information is contained in COPYING.

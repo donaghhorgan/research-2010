@@ -827,7 +827,7 @@ Cell[BoxData[
 }, Open  ]]
 },
 WindowSize->{959, 990},
-WindowMargins->{{282, Automatic}, {Automatic, -8}},
+WindowMargins->{{272, Automatic}, {Automatic, -8}},
 FrontEndVersion->"8.0 for Linux x86 (64-bit) (October 10, 2011)",
 StyleDefinitions->"Default.nb"
 ]
@@ -866,7 +866,7 @@ Cell[CellGroupData[{
 Cell[3106, 101, 94, 1, 74, "Section"],
 Cell[3203, 104, 126, 1, 30, "Text"],
 Cell[3332, 107, 710, 16, 99, "Input"],
-Cell[4045, 125, 831, 22, 70, "Input"],
+Cell[4045, 125, 831, 22, 79, "Input"],
 Cell[4879, 149, 1030, 23, 50, "Input"]
 }, Open  ]],
 Cell[CellGroupData[{
@@ -875,7 +875,7 @@ Cell[CellGroupData[{
 Cell[6064, 182, 157, 2, 39, "Subsection"],
 Cell[6224, 186, 623, 17, 30, "Input"],
 Cell[CellGroupData[{
-Cell[6872, 207, 2737, 82, 124, "Input"],
+Cell[6872, 207, 2737, 82, 146, "Input"],
 Cell[9612, 291, 9599, 172, 271, "Output"]
 }, Open  ]],
 Cell[19226, 466, 379, 10, 30, "Input"]
@@ -885,7 +885,7 @@ Cell[19642, 481, 178, 2, 39, "Subsection"],
 Cell[19823, 485, 260, 6, 50, "Input"],
 Cell[20086, 493, 884, 28, 50, "Input"],
 Cell[CellGroupData[{
-Cell[20995, 525, 3862, 104, 143, "Input"],
+Cell[20995, 525, 3862, 104, 149, "Input"],
 Cell[24860, 631, 9732, 179, 271, "Output"]
 }, Open  ]],
 Cell[34607, 813, 440, 10, 30, "Input"]
