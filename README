@@ -13,7 +13,7 @@ E-mail: donaghh@rennes.ucc.ie
 
 === Copyright ===
 
-Copyright (C) 2010-2012 Donagh Horgan. Licensed under GPLv3, see COPYING for 
+Copyright (C) 2010-2012 Donagh Horgan. Licensed under GPLv3, see LICENSE for 
 more info.
 
 
@@ -27,4 +27,4 @@ The repository is organised as follows:
     used in the notebooks - you do not need to edit these directly (in fact, 
     you don't have to look at them at all if you don't want to - Mathematica 
     will load them at runtime).
-  * Licensing information is contained in COPYING.
+  * Licensing information is contained in LICENSE.
